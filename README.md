@@ -21,3 +21,30 @@ To **remove a container**:
 ```
 docker rm test //test is the name of the container
 ```
+When we start using docker, we will test many images. These images are not removed from the system and they can fill our harddisk. To **list all the images** in the system:
+```
+docker image ls
+```
+It is important to understand that some images are built using others. So if we download an image that has python installed in Ubuntu Server, this one will depend for sure on the Ubuntu image. Thus, we have to be careful with the images that we delete. In order to **remove an image**:
+```
+docker image rm image:tag //for instance, docker image rm ubuntu:18:04
+```
+## Using Docker to deploy an application
+One use of docker is to execute an application. Doing so we get a controlled enviroment for the application which do not depend on the system configuration and that can be runned in any machine that runs docker. The application will be issolated there, running alone, so everything should be smooth and controlled. Lets see how to do this. Lets image that we have developed a very simple webservice using *Python Flask*. Here is the source code:
+#### **`ws.py`**
+```python
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return "Hello World!"
+
+if __name__ == "__main__":
+    app.run()
+```
+Save this in ws.py. So as we can see, our web service depends on Flask. Lets create a file requirements.txt with this content:
+#### **`requirements.txt`**
+```
+Flask==1.1.1
+```
