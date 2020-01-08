@@ -41,10 +41,37 @@ def hello():
     return "Hello World!"
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True, host=’0.0.0.0')
 ```
 Save this in ws.py. So as we can see, our web service depends on Flask. Lets create a file requirements.txt with this content:
 #### **`requirements.txt`**
 ```
 Flask==1.1.1
 ```
+If we want to execute the webservice, we only need to run:
+```
+pip install -r requirements.txt
+python ws.py
+```
+But obviously, this is being executed in our machine. What happens if someone accidentally uninstall Flask, our if we want to develop another service with another Flask version. This is when Docker works very well. Lets see how we can deploy this hello world webservice using a docker container. Lets create a **Dockerfile**. A Dockerfile is a file that describes how to create a docker image. For our image we will need an Ubuntu Server with python. We could use the ubuntu image that we had and install python in it but can use an image that already has python:
+```
+FROM python:3.7
+COPY ./src /app
+WORKDIR /app
+RUN pip install -r requirements.txt
+ENTRYPOINT ["python"]
+CMD ["ws.py"]
+```
+So this file indicates that we part **FROM** the python:3.7 image. Then, we **COPY** the contents of the ./src directory (where I have the ws.py and the requirements.txt files) to the /app directory in the image. We set the **WORKDIR** to the /app directory. Then we **RUN** pip install in order to install the dependencies (in this case, only flask). The **ENTRYPOINT** is the command that will be executed when we run a container from this image. With **CMD** we pass the parameters to the previous command (so it will run `python ws.py`).
+
+Once we have the Dockerfile, we can create the image executing:
+```
+docker build -t hello_world_flask .
+```
+So we are telling docker that it should create a new image with the name *hello_world_flask* using the docker file that is in this directory (.).
+
+In order to create and run a container using this image:
+```
+docker run -p 5000:5000 hello_world_flask
+```
+The *-p* option maps the port 5000 from the container to the port 5000 of our machine, so we can access the webservice. As we can see, the webservice will be running inside the container and accesible from our machine. Using this same configuration we can deploy the container to a cloud service as Google Cloud or Amazon AWS and have our application running in minutes.
