@@ -11,11 +11,19 @@ Option *--name* allows us to give a name to the container and the option *-it* e
 
 If we exit the container it will stop. To **start it again** a get a command line:
 ```
-docker start -i test
+docker start -i test //test is the name of the container
 ```
 To **list the containers** that we have in our system:
 ```
 docker ps --all
+```
+To **stop a container** we have two options. Try to stop the container in a tidy way:
+```
+docker stop test //test is the name of the container
+```
+or just **kill the container**:
+```
+docker kill test //test is the name of the container
 ```
 To **remove a container**:
 ```
