@@ -37,6 +37,12 @@ It is important to understand that some images are built using others. So if we 
 ```
 docker image rm image:tag //for instance, docker image rm ubuntu:18:04
 ```
+After using docker of a while you will see that you will start accumulating containers and images. These two commands are useful to mantain your system tidy. 
+```
+docker rm $(docker ps -q -f status=exited) //Remove all exited containers
+docker image prune -a //Removes all unused images in the system
+``` 
+
 ## Using Docker to deploy an application
 One use of docker is to execute an application. Doing so we get a controlled enviroment for the application which do not depend on the system configuration and that can be runned in any machine that runs docker. The application will be issolated there, running alone, so everything should be smooth and controlled. Lets see how to do this. Lets image that we have developed a very simple webservice using *Python Flask*. Here is the source code:
 #### **`ws.py`**
