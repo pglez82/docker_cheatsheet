@@ -37,7 +37,7 @@ It is important to understand that some images are built using others. So if we 
 ```
 docker image rm image:tag //for instance, docker image rm ubuntu:18:04
 ```
-After using docker of a while you will see that you will start accumulating containers and images. These two commands are useful to mantain your system tidy. 
+After using docker of a while you will see that you will start accumulating containers and images. These two commands are useful to **mantain the system tidy**. 
 ```
 docker rm $(docker ps -q -f status=exited) //Remove all exited containers
 docker image prune -a //Removes all unused images in the system
